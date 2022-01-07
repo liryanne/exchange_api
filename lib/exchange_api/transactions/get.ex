@@ -1,10 +1,20 @@
 defmodule ExchangeApi.Transactions.Get do
-  alias ExchangeApi.{Error, Repo, Transaction}
+  import Ecto.Query, warn: false
 
-  def by_id(id) do
-    case Repo.get(Transaction, id) do
-      nil -> {:error, Error.build(:not_found, "transaction not found")}
-      transaction_schema -> {:ok, transaction_schema}
-    end
+  alias ExchangeApi.{Repo, Transaction}
+
+  def by_user(user_id) do
+    query =
+      from t in Transaction,
+      where: t.user_id == ^(user_id),
+      select: t,
+      order_by: t.inserted_at
+
+    result =
+      Repo.all(query)
+      |> Enum.map(fn t -> %{t | amount_converted: t.amount * t.conversion_rate} end)
+
+    {:ok, result}
   end
+
 end
