@@ -7,6 +7,8 @@ defmodule ExchangeApiWeb.Router do
 
   scope "/api", ExchangeApiWeb do
     pipe_through :api
+
+    post "/transactions/", TransactionsController, :create
   end
 
   # Enables LiveDashboard only for development

@@ -21,6 +21,18 @@ defmodule ExchangeApi.Transaction do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
+  @derive {Jason.Encoder,
+            only: [
+              :id,
+              :amount,
+              :conversion_rate,
+              :currency_from,
+              :currency_to,
+              :user_id,
+              :amount_converted,
+              :inserted_at
+            ]}
+
   schema "transactions" do
     field :amount, :float
     field :conversion_rate, :float
