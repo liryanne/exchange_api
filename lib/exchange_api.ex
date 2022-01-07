@@ -9,5 +9,9 @@ defmodule ExchangeApi do
 
   alias ExchangeApi.Transactions.Create, as: TransactionCreate
 
+  alias ExchangeApi.Transactions.Get, as: TransactionGet
+
   defdelegate create_transaction(params), to: TransactionCreate, as: :call
+
+  defdelegate get_by_user_id(user_id), to: TransactionGet, as: :by_user
 end

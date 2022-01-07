@@ -9,4 +9,13 @@ defmodule ExchangeApiWeb.TransactionsView do
       transaction: transaction
     }
   end
+
+  def render("show.json", %{transactions: transactions}) do
+    %{
+      count: length(transactions),
+      data:
+        render_many(transactions, __MODULE__, "create.json", as: :transaction)
+        |> Enum.map(fn t -> Map.delete(t, :message) end)
+    }
+  end
 end
