@@ -45,6 +45,8 @@ jobs:
       run: mix coveralls.json
       env:
         MIX_ENV: test
+        DATABASE_USER: postgres
+        DATABASE_PASS: postgres        
     - name: Upload to Codecov
       run: |
         curl -Os https://uploader.codecov.io/latest/linux/codecov
