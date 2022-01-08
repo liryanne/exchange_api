@@ -21,5 +21,4 @@ defmodule ExchangeApi.Error do
       status: status
     }
   end
-
 end

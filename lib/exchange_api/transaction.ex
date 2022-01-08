@@ -3,7 +3,7 @@ defmodule ExchangeApi.Transaction do
 
   import Ecto.Changeset
 
-  @fields_that_can_be_changed  [
+  @fields_that_can_be_changed [
     :user_id,
     :currency_from,
     :amount,
@@ -15,23 +15,23 @@ defmodule ExchangeApi.Transaction do
     :user_id,
     :currency_from,
     :amount,
-    :currency_to,
+    :currency_to
   ]
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
 
   @derive {Jason.Encoder,
-            only: [
-              :id,
-              :amount,
-              :conversion_rate,
-              :currency_from,
-              :currency_to,
-              :user_id,
-              :amount_converted,
-              :inserted_at
-            ]}
+           only: [
+             :id,
+             :amount,
+             :conversion_rate,
+             :currency_from,
+             :currency_to,
+             :user_id,
+             :amount_converted,
+             :inserted_at
+           ]}
 
   schema "transactions" do
     field :amount, :float
@@ -48,12 +48,18 @@ defmodule ExchangeApi.Transaction do
   def build(changeset), do: apply_action(changeset, :insert)
 
   defp get_conversion_rate(%Ecto.Changeset{valid?: true, changes: %{}} = changeset) do
-    _currency_from = get_field(changeset, :currency_from)
-    _currency_to = get_field(changeset, :currency_to)
+    convertion_rate = get_field(changeset, :convertion_rate)
 
-    convertion_rate = 2.9
+    if is_nil(convertion_rate) do
+      _currency_from = get_field(changeset, :currency_from)
+      _currency_to = get_field(changeset, :currency_to)
 
-    put_change(changeset, :conversion_rate, convertion_rate)
+      convertion_rate = 2.9
+
+      put_change(changeset, :conversion_rate, convertion_rate)
+    else
+      changeset
+    end
   end
 
   defp get_conversion_rate(%Ecto.Changeset{valid?: false, changes: %{}} = changeset) do
@@ -71,8 +77,8 @@ defmodule ExchangeApi.Transaction do
     put_change(changeset, :amount_converted, 0)
   end
 
-  def changeset(%{} = params) do
-    %__MODULE__{}
+  def changeset(struct \\ %__MODULE__{}, %{} = params) do
+    struct
     |> cast(params, @fields_that_can_be_changed)
     |> validate_required(@required_fields)
     |> get_conversion_rate()

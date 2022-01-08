@@ -7,13 +7,12 @@ defmodule ExchangeApi.Transactions.CreateTest do
 
   describe "call/1" do
     test "when all params are valid, returns the user" do
-      params =
-        %{
-          amount: 100,
-          currency_from: "EUR",
-          currency_to: "SAR",
-          user_id: "36da9aab-145c-4ce1-bccc-10c245a1982f"
-        }
+      params = %{
+        amount: 100,
+        currency_from: "EUR",
+        currency_to: "SAR",
+        user_id: "36da9aab-145c-4ce1-bccc-10c245a1982f"
+      }
 
       response = Create.call(params)
 
@@ -21,12 +20,11 @@ defmodule ExchangeApi.Transactions.CreateTest do
     end
 
     test "when there are invalid params, returns an error" do
-      params =
-        %{
-          amount: 100,
-          currency_to: "SAR",
-          user_id: "36da9aab-145c-4ce1-bccc-10c245a1982f"
-        }
+      params = %{
+        amount: 100,
+        currency_to: "SAR",
+        user_id: "36da9aab-145c-4ce1-bccc-10c245a1982f"
+      }
 
       response = Create.call(params)
 
