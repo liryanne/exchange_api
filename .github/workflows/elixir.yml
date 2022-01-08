@@ -46,7 +46,8 @@ jobs:
       env:
         MIX_ENV: test
         DATABASE_USER: postgres
-        DATABASE_PASS: postgres        
+        DATABASE_PASS: postgres    
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
     - name: Upload to Codecov
       run: |
         curl -Os https://uploader.codecov.io/latest/linux/codecov
