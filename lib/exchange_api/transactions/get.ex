@@ -6,9 +6,9 @@ defmodule ExchangeApi.Transactions.Get do
   def by_user(user_id) do
     query =
       from t in Transaction,
-      where: t.user_id == ^(user_id),
-      select: t,
-      order_by: t.inserted_at
+        where: t.user_id == ^user_id,
+        select: t,
+        order_by: t.inserted_at
 
     result =
       Repo.all(query)
@@ -16,5 +16,4 @@ defmodule ExchangeApi.Transactions.Get do
 
     {:ok, result}
   end
-
 end

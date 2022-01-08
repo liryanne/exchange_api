@@ -12,6 +12,5 @@ defmodule ExchangeApi.Repo.Migrations.CreateTransactions do
 
       timestamps()
     end
-
   end
 end
