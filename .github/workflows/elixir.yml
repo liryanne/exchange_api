@@ -49,9 +49,15 @@ jobs:
         DATABASE_PASS: postgres    
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         ACCESS_KEY: ${{ secrets.ACCESS_KEY }} 
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }} 
     - name: Upload to Codecov
-      run: |
-        curl -Os https://uploader.codecov.io/latest/linux/codecov
-        chmod +x codecov
-        ./codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        directory: ./coverage/reports/
+        env_vars: OS,PYTHON
+        fail_ci_if_error: true
+        files: ./coverage1.xml,./coverage2.xml
+        flags: unittests
+        name: codecov-umbrella
+        path_to_write_report: ./coverage/codecov_report.txt
+        verbose: true
