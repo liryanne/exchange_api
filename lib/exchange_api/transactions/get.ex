@@ -1,19 +1,25 @@
 defmodule ExchangeApi.Transactions.Get do
   import Ecto.Query, warn: false
 
-  alias ExchangeApi.{Repo, Transaction}
+  alias ExchangeApi.{Repo, Transaction, Error}
 
   def by_user(user_id) do
-    query =
-      from t in Transaction,
-        where: t.user_id == ^user_id,
-        select: t,
-        order_by: t.inserted_at
+    case Ecto.UUID.cast(user_id) do
+      :error ->
+        {:error, Error.build(:bad_request, "user id is invalid")}
 
-    result =
-      Repo.all(query)
-      |> Enum.map(fn t -> %{t | amount_converted: t.amount * t.conversion_rate} end)
+        {:ok, uuid} ->
+          query =
+            from t in Transaction,
+              where: t.user_id == ^uuid,
+              select: t,
+              order_by: t.inserted_at
 
-    {:ok, result}
+          result =
+            Repo.all(query)
+            |> Enum.map(fn t -> %{t | amount_converted: t.amount * t.conversion_rate} end)
+
+          {:ok, result}
+    end
   end
 end

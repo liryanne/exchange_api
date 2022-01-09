@@ -1,8 +1,8 @@
 defmodule ExchangeApi.Transactions.GetTest do
   use ExchangeApi.DataCase, async: true
 
-  alias ExchangeApi.Transactions.Create
-  alias ExchangeApi.Transactions.Get
+  alias ExchangeApi.Transactions.{Create, Get}
+  alias ExchangeApi.Error
 
   describe "by_user/1" do
     @valid_transaction %{
@@ -13,25 +13,24 @@ defmodule ExchangeApi.Transactions.GetTest do
     }
 
     def repository_fixture(attrs \\ %{}) do
-      {:ok, transaction} =
+      {:ok, _transaction} =
         attrs
         |> Enum.into(@valid_transaction)
         |> Create.call()
     end
 
-    test "list transaction by user id" do
+    test "list transaction by user id when is given a valid id" do
       {:ok, transaction} = repository_fixture()
-
-      expected_response = %{
-        count: 1,
-        data: [
-          transaction |> Map.delete(:message)
-        ]
-      }
 
       {:ok, response} = Get.by_user(@valid_transaction.user_id)
 
       assert response == [transaction]
+    end
+
+    test "when there is invalid param, returns an error" do
+      {:error, response} = Get.by_user("12345")
+
+      assert response == Error.build(:bad_request, "user id is invalid")
     end
   end
 end

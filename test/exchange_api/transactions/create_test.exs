@@ -1,7 +1,7 @@
 defmodule ExchangeApi.Transactions.CreateTest do
   use ExchangeApi.DataCase, async: true
 
-  alias ExchangeApi.{Error, Transaction}
+  alias ExchangeApi.{Transaction}
   alias ExchangeApi.Transactions.Create
   alias ExchangeApi.Transaction
 
