@@ -3,6 +3,9 @@ defmodule ExchangeApi.Transaction do
 
   import Ecto.Changeset
 
+  alias ExchangeApi.Exchangerates.Client
+  alias ExchangeApi.Error
+
   @fields_that_can_be_changed [
     :user_id,
     :currency_from,
@@ -44,19 +47,27 @@ defmodule ExchangeApi.Transaction do
     timestamps()
   end
 
-  @spec build(Ecto.Changeset.t()) :: {:error, Ecto.Changeset.t()} | {:ok, map}
+
+  def build({:error, _} = changeset), do: changeset
   def build(changeset), do: apply_action(changeset, :insert)
 
   defp get_conversion_rate(%Ecto.Changeset{valid?: true, changes: %{}} = changeset) do
-    convertion_rate = get_field(changeset, :convertion_rate)
+    conversion_rate = get_field(changeset, :conversion_rate)
 
-    if is_nil(convertion_rate) do
-      _currency_from = get_field(changeset, :currency_from)
-      _currency_to = get_field(changeset, :currency_to)
+    if is_nil(conversion_rate) do
+      currency_from = get_field(changeset, :currency_from)
+      currency_to = get_field(changeset, :currency_to)
 
-      convertion_rate = 2.9
+      # conversion_rate = 2.9
+      result = Client.get_conversion_rate(currency_to, currency_from)
 
-      put_change(changeset, :conversion_rate, convertion_rate)
+      with {:ok, conversion_rate} <- result do
+        put_change(changeset, :conversion_rate, conversion_rate)
+
+      else
+        {:error, %Error{}} = error -> error
+        {:error, result} -> {:error, Error.build(:bad_request, result)}
+      end
     else
       changeset
     end
@@ -68,7 +79,7 @@ defmodule ExchangeApi.Transaction do
 
   defp get_amount_converted(%Ecto.Changeset{valid?: true, changes: %{}} = changeset) do
     amount = get_field(changeset, :amount)
-    conversion_rate = get_field(changeset, :conversion_rate)
+    conversion_rate = get_field(changeset, :conversion_rate) || 0.0
 
     put_change(changeset, :amount_converted, amount * conversion_rate)
   end
@@ -76,6 +87,8 @@ defmodule ExchangeApi.Transaction do
   defp get_amount_converted(%Ecto.Changeset{valid?: false, changes: %{}} = changeset) do
     put_change(changeset, :amount_converted, 0)
   end
+
+  defp get_amount_converted({:error, _} = changeset), do: changeset
 
   def changeset(struct \\ %__MODULE__{}, %{} = params) do
     struct

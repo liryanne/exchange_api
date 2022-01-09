@@ -9,7 +9,7 @@ defmodule ExchangeApi.TransactionTest do
       params = %{
         amount: 100,
         currency_from: "EUR",
-        currency_to: "BR",
+        currency_to: "BRL",
         user_id: "36da9aab-145c-4ce1-bccc-10c245a1982f"
       }
 
