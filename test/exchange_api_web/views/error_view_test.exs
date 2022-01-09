@@ -12,8 +12,4 @@ defmodule ExchangeApiWeb.ErrorViewTest do
     assert render(ExchangeApiWeb.ErrorView, "500.json", []) ==
              %{errors: %{detail: "Internal Server Error"}}
   end
-
-  test "when there is a generic error" do
-    assert 1 == 1
-  end
 end
