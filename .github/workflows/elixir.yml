@@ -51,5 +51,6 @@ jobs:
         ACCESS_KEY: ${{ secrets.ACCESS_KEY }} 
     - name: Upload to Codecov   
       run: |
-        curl -Os https://uploader.codecov.io/latest/linux/codecov
-        chmod +x codecov -t ${CODECOV_TOKEN}
+        curl -Os https://uploader.codecov.io/latest/linux/codecov 
+        chmod +x codecov
+        ./codecov -t ${CODECOV_TOKEN}
