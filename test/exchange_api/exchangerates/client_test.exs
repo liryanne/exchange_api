@@ -5,7 +5,7 @@ defmodule ExchangeApi.Exchangerates.ClientTest do
   alias ExchangeApi.Error
   alias ExchangeApi.Exchangerates.Client
 
-  describe "get_conversion_rate/2" do
+  describe "get_conversion_rate/3" do
     setup do
       bypass = Bypass.open()
       {:ok, bypass: bypass}
@@ -16,13 +16,13 @@ defmodule ExchangeApi.Exchangerates.ClientTest do
 
       Bypass.expect(bypass, fn conn ->
         conn
-        |> Conn.put_resp_header("content-type", "application/json")
-        |> Conn.resp(200, ~s({"success": true}))
+        |> Conn.put_resp_header("content-type", "application/json; Charset=UTF-8")
+        |> Conn.resp(:ok, ~s({"success": true, "rates": {"BRL": 2.99}}))
       end)
 
-      response = Client.get_conversion_rate(url)
+      response = Client.get_conversion_rate("BRL", "EUR", url)
 
-      assert {:ok, _} = response
+      assert {:ok, 2.99} = response
     end
 
     test "when success is false", %{bypass: bypass} do
@@ -30,11 +30,11 @@ defmodule ExchangeApi.Exchangerates.ClientTest do
 
       Bypass.expect(bypass, fn conn ->
         conn
-        |> Conn.put_resp_header("content-type", "application/json")
+        |> Conn.put_resp_header("content-type", "application/json; Charset=UTF-8")
         |> Conn.resp(200, ~s({"success": false}))
       end)
 
-      response = Client.get_conversion_rate(url)
+      response = Client.get_conversion_rate("BRL", "EUR", url)
 
       assert {:error, _} = response
     end
@@ -44,7 +44,7 @@ defmodule ExchangeApi.Exchangerates.ClientTest do
 
       Bypass.down(bypass)
 
-      response = Client.get_conversion_rate(url)
+      response = Client.get_conversion_rate("BRL", "EUR", url)
 
       expected_response = {:error, %Error{result: :econnrefused, status: :bad_request}}
 
