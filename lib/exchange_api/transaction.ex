@@ -47,7 +47,6 @@ defmodule ExchangeApi.Transaction do
     timestamps()
   end
 
-
   def build({:error, _} = changeset), do: changeset
   def build(changeset), do: apply_action(changeset, :insert)
 
@@ -63,7 +62,6 @@ defmodule ExchangeApi.Transaction do
 
       with {:ok, conversion_rate} <- result do
         put_change(changeset, :conversion_rate, conversion_rate)
-
       else
         {:error, %Error{}} = error -> error
         {:error, result} -> {:error, Error.build(:bad_request, result)}

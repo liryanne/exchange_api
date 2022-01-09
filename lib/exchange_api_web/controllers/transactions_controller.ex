@@ -4,7 +4,7 @@ defmodule ExchangeApiWeb.TransactionsController do
   alias ExchangeApi.Transaction
   alias ExchangeApiWeb.FallbackController
 
-  action_fallback  FallbackController
+  action_fallback FallbackController
 
   def create(conn, params) do
     with {:ok, %Transaction{} = transaction} <- ExchangeApi.create_transaction(params) do

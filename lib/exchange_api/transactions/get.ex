@@ -8,18 +8,18 @@ defmodule ExchangeApi.Transactions.Get do
       :error ->
         {:error, Error.build(:bad_request, "user id is invalid")}
 
-        {:ok, uuid} ->
-          query =
-            from t in Transaction,
-              where: t.user_id == ^uuid,
-              select: t,
-              order_by: t.inserted_at
+      {:ok, uuid} ->
+        query =
+          from t in Transaction,
+            where: t.user_id == ^uuid,
+            select: t,
+            order_by: t.inserted_at
 
-          result =
-            Repo.all(query)
-            |> Enum.map(fn t -> %{t | amount_converted: t.amount * t.conversion_rate} end)
+        result =
+          Repo.all(query)
+          |> Enum.map(fn t -> %{t | amount_converted: t.amount * t.conversion_rate} end)
 
-          {:ok, result}
+        {:ok, result}
     end
   end
 end

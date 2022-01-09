@@ -26,9 +26,11 @@ defmodule ExchangeApiWeb.TransactionsViewTest do
 
     expected_response = %{
       count: 1,
-      data: [%{
-        transaction: @transaction
-      }]
+      data: [
+        %{
+          transaction: @transaction
+        }
+      ]
     }
 
     assert expected_response == response

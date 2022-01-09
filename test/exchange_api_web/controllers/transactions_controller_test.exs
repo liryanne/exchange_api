@@ -2,7 +2,6 @@ defmodule ExchangeApiWeb.TransactionsControllerTest do
   use ExchangeApiWeb.ConnCase, async: true
 
   describe "create/2" do
-
     @valid_params %{
       amount: 100,
       currency_from: "EUR",
@@ -16,11 +15,10 @@ defmodule ExchangeApiWeb.TransactionsControllerTest do
         |> post(Routes.transactions_path(conn, :create, @valid_params))
         |> json_response(:created)
 
-      expected_response =
-        %{
-          "message" => "Transaction created!",
-          "transaction" => %{}
-        }
+      expected_response = %{
+        "message" => "Transaction created!",
+        "transaction" => %{}
+      }
 
       assert expected_response["message"] == response["message"]
     end
@@ -45,5 +43,4 @@ defmodule ExchangeApiWeb.TransactionsControllerTest do
       assert expected_response == response
     end
   end
-
 end

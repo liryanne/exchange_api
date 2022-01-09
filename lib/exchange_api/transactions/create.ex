@@ -4,7 +4,6 @@ defmodule ExchangeApi.Transactions.Create do
   alias ExchangeApi.Transaction
 
   def call(%{} = params) do
-
     changeset = Transaction.changeset(params)
 
     with {:ok, %Transaction{}} <- Transaction.build(changeset),

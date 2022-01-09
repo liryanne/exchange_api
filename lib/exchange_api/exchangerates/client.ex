@@ -15,7 +15,7 @@ defmodule ExchangeApi.Exchangerates.Client do
     |> handle_get(currency_to)
   end
 
-  defp handle_get({:ok, %Env{status: 200, body: %{"success" => false} = error}} , _) do
+  defp handle_get({:ok, %Env{status: 200, body: %{"success" => false} = error}}, _) do
     {:error, Error.build(:bad_request, error["error"]["type"])}
   end
 
