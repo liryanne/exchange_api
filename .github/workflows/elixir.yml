@@ -48,6 +48,7 @@ jobs:
         DATABASE_USER: postgres
         DATABASE_PASS: postgres    
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        ACCESS_KEY: ${{ secrets.ACCESS_KEY }} 
     - name: Upload to Codecov
       run: |
         curl -Os https://uploader.codecov.io/latest/linux/codecov
