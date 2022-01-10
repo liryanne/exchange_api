@@ -14,6 +14,7 @@ In this version, two routes are available for use:
 
 [Documentation API - Swagger](https://exchangeapi-lsn.herokuapp.com/api/swagger/index.html)
 
+> [Tool](https://www.uuidgenerator.net) to generate user id.
 
 ## To run locally
 
