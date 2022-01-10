@@ -22,7 +22,9 @@ Requirements:
   * [x] Elixir 
   * [x] PostgreSQL
 
-Create the environment variables: `DATABASE_USER` e `DATABASE_PASS`
+Create the environment variables: `DATABASE_USER`, `DATABASE_PASS` e `ACCESS_KEY`. 
+
+The ACCESS_KEY is obtained by creating an account [here](https://exchangeratesapi.io).
 
   * Install dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup`
