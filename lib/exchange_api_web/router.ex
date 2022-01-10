@@ -12,6 +12,23 @@ defmodule ExchangeApiWeb.Router do
     get "/transactions/user/:id", TransactionsController, :show
   end
 
+  scope "/api/swagger" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI,
+      otp_app: :exchange_api,
+      swagger_file: "swagger.json"
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "Exchange API",
+        description: "API Documentation for Exchange API v1",
+        termsOfService: "Open for public",
+      }
+    }
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
