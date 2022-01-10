@@ -54,3 +54,6 @@ jobs:
         curl -Os https://uploader.codecov.io/latest/linux/codecov 
         chmod +x codecov
         ./codecov -t ${{ secrets.CODECOV_TOKEN }}
+    - name: Generate API Documentation
+      run: mix phx.swagger.generate
+
